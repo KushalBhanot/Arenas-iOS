@@ -7,6 +7,14 @@
 
 import UIKit
 
+protocol BlueNameDelegate: class {
+    func changeBlueButtonName(newTitle: String)
+}
+
+protocol RedNameDelegate: class {
+    func changeRedButtonName(newTitle: String)
+}
+
 class ViewController: UIViewController {
     
     var redArenaButton: UIButton!
@@ -64,12 +72,14 @@ class ViewController: UIViewController {
     }
     
     @objc func pushRedArena() {
-        let newViewController = RedViewController()
+        let newViewController = RedViewController(placeholder: redArenaButton.titleLabel?.text ?? "Placeholder")
+        newViewController.delegate = self
         navigationController?.pushViewController(newViewController, animated: true)
     }
     
     @objc func presentBlueArena() {
-        let newViewContoller = BlueViewController()
+        let newViewContoller = BlueViewController(placeholder: blueArenaButton.titleLabel?.text ?? "Placeholder")
+        newViewContoller.delegate = self
         present(newViewContoller, animated: true, completion: nil)
     }
     
@@ -79,3 +89,14 @@ class ViewController: UIViewController {
     }
 }
 
+extension ViewController: BlueNameDelegate {
+    func changeBlueButtonName(newTitle: String) {
+        blueArenaButton.setTitle(newTitle, for: .normal)
+    }
+}
+
+extension ViewController: RedNameDelegate {
+    func changeRedButtonName(newTitle: String) {
+        redArenaButton.setTitle(newTitle, for: .normal)
+    }
+}
